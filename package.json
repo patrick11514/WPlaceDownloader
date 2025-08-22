@@ -16,6 +16,7 @@
         "dotenv": "^16.4.7",
         "node-fetch": "^3.3.0",
         "prettier": "^3.1.0",
+        "sharp": "^0.34.3",
         "strip-color": "^0.1.0",
         "zod": "^3.24.1"
     },
