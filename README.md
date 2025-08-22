@@ -2,6 +2,9 @@
 
 Simple tool to download specified canvas from [wplace.live](https://wplace.live).
 
+Example output from src/index.ts:
+![Example output](./example.png)
+
 You can modify example index.ts file to download different canvas.
 
 Simple API:
