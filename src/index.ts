@@ -1,17 +1,29 @@
+import fs from 'fs/promises';
+import { Chunk, WPlace } from './lib/WPlace';
 import Logger from './lib/logger';
-//logger for main messages
-const l = new Logger('MyCoolApp', 'cyan');
+import './lib/pollyfil';
 
-type Cat = {
-    name: string;
-    age: number;
-    color: 'white' | 'orange' | 'black' | 'gray';
-};
+const wPlace = new WPlace(true);
 
-const myCuteAnimal = {
-    name: 'Mourek',
-    age: 2,
-    color: 'orange'
-} satisfies Cat;
+const start = {
+    col: 1126,
+    row: 695
+} satisfies Chunk;
 
-l.log(JSON.stringify(myCuteAnimal));
+const end = {
+    col: 1129,
+    row: 697
+} satisfies Chunk;
+
+(async () => {
+    const FILE_NAME = 'output.png';
+
+    const cwd = process.cwd();
+
+    const l = new Logger('Main', 'cyan');
+    l.start('Starting download...');
+    const chunks = await wPlace.fetchChunksInRange(start, end);
+    const image = await wPlace.constructImage(chunks);
+    await fs.writeFile(FILE_NAME, await image.toBuffer());
+    l.stop(`Download complete! ${cwd}/${FILE_NAME}`);
+})();
