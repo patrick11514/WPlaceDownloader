@@ -1,14 +1,14 @@
 name: Update Example Image
 
 on:
-    push:
-        branches: [main]
     schedule:
         # Run every 6 hours
         - cron: '0 */6 * * *'
+    workflow_dispatch: # Allow manual triggering
 
 permissions:
     contents: write
+    pull-requests: write
 
 jobs:
     update-example:
@@ -48,7 +48,7 @@ jobs:
             - name: Update example image
               run: cp output.png example.png
 
-            - name: Commit and push changes
+            - name: Create Pull Request for changes
               run: |
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
@@ -56,6 +56,18 @@ jobs:
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
                   else
+                    # Create a unique branch name with timestamp
+                    BRANCH_NAME="update-example-$(date +%Y%m%d-%H%M%S)"
+                    git checkout -b "$BRANCH_NAME"
                     git commit -m "Updated the example image"
-                    git push
+                    git push origin "$BRANCH_NAME"
+                    
+                    # Create pull request using GitHub CLI
+                    gh pr create \
+                      --title "Update example image (automated)" \
+                      --body "Automated update of example.png generated from the latest code." \
+                      --base main \
+                      --head "$BRANCH_NAME"
                   fi
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
