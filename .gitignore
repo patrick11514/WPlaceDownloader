@@ -5,3 +5,4 @@
 /*.png
 !example.png
 /build
+package-lock.json
