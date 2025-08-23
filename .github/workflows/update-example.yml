@@ -8,7 +8,6 @@ on:
 
 permissions:
     contents: write
-    pull-requests: write
 
 jobs:
     update-example:
@@ -17,6 +16,9 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
+              with:
+                  # Make sure we use SSH remote so deploy key is used
+                  ssh-key: ${{ secrets.ACTIONS_UPDATE_KEY }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -48,7 +50,7 @@ jobs:
             - name: Update example image
               run: cp output.png example.png
 
-            - name: Create Pull Request for changes
+            - name: Commit and push changes
               run: |
                   git config --local user.email "action@github.com"
                   git config --local user.name "GitHub Action"
@@ -56,18 +58,6 @@ jobs:
                   if git diff --staged --quiet; then
                     echo "No changes to commit"
                   else
-                    # Create a unique branch name with timestamp
-                    BRANCH_NAME="update-example-$(date +%Y%m%d-%H%M%S)"
-                    git checkout -b "$BRANCH_NAME"
                     git commit -m "Updated the example image"
-                    git push origin "$BRANCH_NAME"
-                    
-                    # Create pull request using GitHub CLI
-                    gh pr create \
-                      --title "Update example image (automated)" \
-                      --body "Automated update of example.png generated from the latest code." \
-                      --base main \
-                      --head "$BRANCH_NAME"
+                    git push
                   fi
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
