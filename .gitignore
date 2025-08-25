@@ -6,3 +6,5 @@
 !example.png
 /build
 package-lock.json
+/frames
+/timelapse.gif
