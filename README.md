@@ -95,3 +95,8 @@ npm run dev
 npm run build
 npm start
 ```
+
+## Timelapse
+
+If you want, you can create a timelapse of the canvas evolution. You need git and ffmpeg installed.
+Then you just run the ./createTimelapse.sh, it gathers all frames from git history, and render the timelapse.gif file.
