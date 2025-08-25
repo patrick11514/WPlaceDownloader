@@ -4,7 +4,7 @@
 
 mkdir -p frames
 
-rm frames/*.png
+rm -f frames/*.png
 
 i=0
 for h in $(git log --follow --format=%H -- example.png | tac); do
