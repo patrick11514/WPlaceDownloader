@@ -1,63 +1,91 @@
-name: Update Example Image
+name: Update Example & Timelapse (single commit)
 
 on:
-    schedule:
-        # Run every 3 hours
-        - cron: '0 */3 * * *'
-    workflow_dispatch: # Allow manual triggering
-
-permissions:
-    contents: write
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
 
 jobs:
-    update-example:
-        runs-on: ubuntu-latest
+  update-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.ACTIONS_UPDATE_KEY }}
+          fetch-depth: 0
+          # lfs: true  # uncomment if example.png is in LFS
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-              with:
-                  # Make sure we use SSH remote so deploy key is used
-                  ssh-key: ${{ secrets.ACTIONS_UPDATE_KEY }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '20'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  version: latest
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
 
-            - name: Cache dependencies
-              uses: actions/cache@v3
-              with:
-                  path: node_modules
-                  key: ${{ runner.os }}-node-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-modules-
+      - name: Build
+        run: pnpm build
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+      - name: Generate output
+        run: pnpm start
 
-            - name: Build project
-              run: pnpm build
+      - name: Update example.png
+        run: cp output.png example.png
 
-            - name: Run project to generate output
-              run: pnpm start
+      - name: Commit example.png
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add example.png
+          if git diff --staged --quiet; then
+            echo "No changes in example.png"
+          else
+            git commit -m "Update example.png"
+            git push
+          fi
 
-            - name: Update example image
-              run: cp output.png example.png
+  build-timelapse:
+    runs-on: ubuntu-latest
+    needs: update-example
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.ACTIONS_UPDATE_KEY }}
+          fetch-depth: 0
+          # lfs: true  # if needed
 
-            - name: Commit and push changes
-              run: |
-                  git config --local user.email "action@github.com"
-                  git config --local user.name "GitHub Action"
-                  git add example.png
-                  if git diff --staged --quiet; then
-                    echo "No changes to commit"
-                  else
-                    git commit -m "Updated the example image"
-                    git push
-                  fi
+      - name: Ensure ffmpeg present (optional debug)
+        run: ffmpeg -version
+
+      - name: Generate timelapse.gif
+        run: |
+          chmod +x ./createTimelapse.sh
+          ./createTimelapse.sh
+
+      - name: Amend last commit with timelapse.gif
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add timelapse.gif
+          if git diff --staged --quiet; then
+            echo "No changes in timelapse.gif; nothing to amend."
+            exit 0
+          fi
+
+          # If HEAD is the commit from job 1, amend it; otherwise, make a new commit.
+          if git log -1 --pretty=%B | grep -q "Update example.png"; then
+            git commit --amend --no-edit
+          else
+            git commit -m "Update example.png (with timelapse.gif)"
+          fi
+
+          # Force-push safely
+          git push --force-with-lease
