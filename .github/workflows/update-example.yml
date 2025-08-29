@@ -2,7 +2,6 @@ name: Update Example Image
 
 on:
     schedule:
-        # Run every 3 hours
         - cron: '0 */3 * * *'
     workflow_dispatch: # Allow manual triggering
 
@@ -17,7 +16,8 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
               with:
-                  # Make sure we use SSH remote so deploy key is used
+                  ref: assets
+                  fetch-depth: 0
                   ssh-key: ${{ secrets.ACTIONS_UPDATE_KEY }}
 
             - name: Setup Node.js
