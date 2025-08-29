@@ -12,8 +12,6 @@ for h in $(git log --follow --format=%H -- example.png | tac); do
     i=$((i + 1))
 done
 
-rm frames/0001.png # remove the first frame, it's blank, because of CI issues back then 
-
 ffmpeg -framerate 6 -pattern_type glob -i 'frames/*.png' \
   -vf "palettegen=reserve_transparent=1" -y palette.png
 
