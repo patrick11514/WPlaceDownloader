@@ -102,7 +102,7 @@ Fork the repo on github, and check 'Copy the `main` branch only'.
 Then go to branches (main) -> 'View all branches' -> New branch -> type 'assets' and check that Source is 'main' branch, and click 'Create new branch'.
 
 Now you probably have the Actions disabled, go to Actions tab on github, and enable them.
-Then click on the 'Update Example Image' workflow, and click enable workflow.
+Then click on the 'Update Example Image' workflow, and click the enable workflow.
 Thats all, now every 3 hours (or by going into Actions tab -> Update Example Image -> Run workflow -> Branch: assets -> Run workflow) the example.png file will be updated automatically.
 
 Video tutorial: https://youtu.be/q6Aq41gTRcA
