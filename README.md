@@ -101,7 +101,7 @@ npm start
 > [!CAUTION]  
 > Using GitHub Actions may incur costs depending on your usage. Please review [GitHub’s billing documentation](https://docs.github.com/en/billing/concepts/product-billing/github-actions#free-use-of-github-actions) for details.  
 >  
-> GitHub Actions are billed by the **minutes of runtime**. If you configure the workflow with a very large canvas or introduce an error, the action may run much longer than expected — in the worst case, it could continue running until the next scheduled job starts.  
+> GitHub Actions are billed by the **minutes of runtime**. If you configure the workflow with a very large canvas or introduce an error, the action may run much longer than expected — in the worst case, it could continue running until the next scheduled job runs.  
 >  
 > To avoid unnecessary charges, it is strongly recommended to test the workflow manually on smaller inputs and verify that it completes correctly.  
 >  
