@@ -98,14 +98,23 @@ npm start
 
 ## Running automatically on [Github Actions](https://github.com/features/actions)
 
-Fork the repo on github, and check 'Copy the `main` branch only'.
-Then go to branches (main) -> 'View all branches' -> New branch -> type 'assets' and check that Source is 'main' branch, and click 'Create new branch'.
+> [!CAUTION]  
+> Using GitHub Actions may incur costs depending on your usage. Please review [GitHub’s billing documentation](https://docs.github.com/en/billing/concepts/product-billing/github-actions#free-use-of-github-actions) for details.  
+>  
+> GitHub Actions are billed by the **minutes of runtime**. If you configure the workflow with a very large canvas or introduce an error, the action may run much longer than expected — in the worst case, it could continue running until the next scheduled job runs.  
+>  
+> To avoid unnecessary charges, it is strongly recommended to test the workflow manually on smaller inputs and verify that it completes correctly.  
+>  
+> ⚠️ You are responsible for any costs that arise from running these workflows.
 
-Now you probably have the Actions disabled, go to Actions tab on github, and enable them.
-Then click on the 'Update Example Image' workflow, and click the enable workflow.
-Thats all, now every 3 hours (or by going into Actions tab -> Update Example Image -> Run workflow -> Branch: assets -> Run workflow) the example.png file will be updated automatically.
+*Video tutorial for steps below: https://youtu.be/q6Aq41gTRcA*
 
-Video tutorial: https://youtu.be/q6Aq41gTRcA
+1. Fork the repo on github, and check 'Copy the `main` branch only'.
+2. Then go to branches (main) -> 'View all branches' -> New branch -> type 'assets' and check that Source is 'main' branch, and click 'Create new branch'.
+3. Now you can edit the index.ts file with your coordinates, for this, you can use the dev tools network tab, or some sort of UserScript for showing coordinates of current chunk.
+4. Then you probably have the Actions disabled, go to Actions tab on github, and enable them.
+5. Then click on the 'Update Example Image' workflow, and click the enable workflow. *Here github warns you about running unverified workflows, you can freely check the code of my workflow, which you will be using [here](https://github.com/patrick11514/WPlaceDownloader/blob/main/.github/workflows/update-example.yml)*
+6. Thats all, now every 3 hours (or by going into Actions tab -> Update Example Image -> Run workflow -> Branch: assets -> Run workflow) the example.png file will be updated automatically.
 
 ## Timelapse
 
