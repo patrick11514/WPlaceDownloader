@@ -111,7 +111,7 @@ npm start
 
 1. Fork the repo on github, and check 'Copy the `main` branch only'.
 2. Then go to branches (main) -> 'View all branches' -> New branch -> type 'assets' and check that Source is 'main' branch, and click 'Create new branch'.
-3. Now you can edit the index.ts file with your coordinates, for this, you can use the dev tools network tab, or some sort of UseScript for showing coordinates of current chunk.
+3. Now you can edit the index.ts file with your coordinates, for this, you can use the dev tools network tab, or some sort of UserScript for showing coordinates of current chunk.
 4. Then you probably have the Actions disabled, go to Actions tab on github, and enable them.
 5. Then click on the 'Update Example Image' workflow, and click the enable workflow. *Here github warns you about running unverified workflows, you can freely check the code of my workflow, which you will be using [here](https://github.com/patrick11514/WPlaceDownloader/blob/main/.github/workflows/update-example.yml)*
 6. Thats all, now every 3 hours (or by going into Actions tab -> Update Example Image -> Run workflow -> Branch: assets -> Run workflow) the example.png file will be updated automatically.
