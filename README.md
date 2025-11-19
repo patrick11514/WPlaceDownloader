@@ -2,7 +2,7 @@
 
 Simple tool to download specified canvas from [wplace.live](https://wplace.live).
 
-Example output from src/index.ts (updated every 3 hours):
+Example output from src/index.ts:
 ![Example output](https://raw.githubusercontent.com/patrick11514/WPlaceDownloader/assets/example.png)
 
 You can modify example index.ts file to download different canvas.
