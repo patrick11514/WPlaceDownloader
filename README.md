@@ -1,5 +1,7 @@
 # Wplace Downloader
 
+Created with this tool: https://www.youtube.com/watch?v=YfVyvKAH3Dc
+
 Simple tool to download specified canvas from [wplace.live](https://wplace.live).
 
 Example output from src/index.ts:
